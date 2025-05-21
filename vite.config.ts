@@ -12,7 +12,7 @@ import webExtension from "vite-plugin-web-extension";
 
 // @ts-ignore
 import tailwindcss from "@tailwindcss/vite";
-import { vitePluginGenerateWebextLocales } from "./vite/generateWebextLocales";
+import { vitePluginGenerateWebextLocales } from "./vite/plugin/generateWebextLocales.ts";
 
 import git from "git-rev-sync";
 import pkg from "./package.json";
@@ -116,6 +116,13 @@ export default defineConfig({
         "{{chrome}}.permissions": [...permissions, "offscreen"],
         "{{firefox}}.permissions": permissions,
         host_permissions: ["*://*/*"],
+
+        "{{firefox}}.browser_specific_settings": {
+          gecko: {
+            id: "ptdepiler.ptplugins@gmail.com",
+            strict_min_version: "109",
+          },
+        },
       }),
       additionalInputs: target == "chrome" ? ["src/entries/offscreen/offscreen.html"] : undefined,
       watchFilePaths: ["package.json"],
